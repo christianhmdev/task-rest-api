@@ -26,7 +26,7 @@ Task Manager Spring Boot Application.
 - Spring Security
 - Java JWT
 - Auth0 Java JWT
-- Hibernate.
+- Hibernate
 - Swagger for API documentation
 - Lombok
 - BDDMockito
