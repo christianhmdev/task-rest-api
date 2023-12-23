@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="create_tables" author="lilyrubich">
+        <createTable tableName="users">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(40)"/>
+            <column name="password" type="VARCHAR(100)"/>
+        </createTable>
+
+        <createTable tableName="tasks">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="title" type="VARCHAR(40)"/>
+            <column name="description" type="VARCHAR(100)"/>
+            <column name="priority" type="VARCHAR(40)"/>
+            <column name="status" type="VARCHAR(40)"/>
+            <column name="assignee_id" type="BIGINT"/>
+            <column name="reporter_id" type="BIGINT"/>
+        </createTable>
+
+        <createTable tableName="comments">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="content" type="VARCHAR(100)"/>
+            <column name="creation_time" type="TIMESTAMP"/>
+            <column name="task_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="tasks" baseColumnNames="reporter_id" constraintName="fk_reporter_task"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseTableName="tasks" baseColumnNames="assignee_id" constraintName="fk_assignee_task"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseTableName="comments" baseColumnNames="task_id" constraintName="fk_comment_task"
+                                 referencedTableName="tasks"
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseTableName="comments" baseColumnNames="user_id" constraintName="fk_comment_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="data_init" author="lilyrubich">
+                <insert tableName="users">
+                    <column name="id" value="10" />
+                    <column name="name" value="tester" />
+                    <column name="email" value="test@test.com" />
+                    <column name="password" value="$2a$12$TaeUFjkK/2noj.hpBhWuS.zSxuUMsxnegpj0NzRPr.jvq4P5qqYxe" />
+                </insert>
+                <insert tableName="users">
+                    <column name="id" value="11" />
+                    <column name="name" value="lily" />
+                    <column name="email" value="lily@test.com" />
+                    <column name="password" value="$2a$12$TaeUFjkK/2noj.hpBhWuS.zSxuUMsxnegpj0NzRPr.jvq4P5qqYxe" />
+                </insert>
+
+
+                <insert tableName="tasks">
+                    <column name="id" value="10" />
+                    <column name="title" value="Error occurs during auth" />
+                    <column name="description" value="Need help" />
+                    <column name="priority" value="HIGH" />
+                    <column name="status" value="IN_PROGRESS" />
+                    <column name="assignee_id" value="10" />
+                    <column name="reporter_id" value="11" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="11" />
+                    <column name="title" value="Important task" />
+                    <column name="description" value="Veeery important task!!!!1" />
+                    <column name="priority" value="MIDDLE" />
+                    <column name="status" value="BACKLOG" />
+                    <column name="assignee_id" value="10" />
+                    <column name="reporter_id" value="11" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="12" />
+                    <column name="title" value="Create a login form" />
+                    <column name="description" value="Create a login form using angular" />
+                    <column name="priority" value="MIDDLE" />
+                    <column name="status" value="BACKLOG" />
+                    <column name="assignee_id" value="10" />
+                    <column name="reporter_id" value="11" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="13" />
+                    <column name="title" value="Fix incorrect response" />
+                    <column name="description" value="Got an incorrect response when creation fail" />
+                    <column name="priority" value="LOW" />
+                    <column name="status" value="CLOSED" />
+                    <column name="assignee_id" value="10" />
+                    <column name="reporter_id" value="11" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="14" />
+                    <column name="title" value="Reserve task" />
+                    <column name="description" value="for free time" />
+                    <column name="priority" value="LOW" />
+                    <column name="status" value="CLOSED" />
+                    <column name="assignee_id" value="10" />
+                    <column name="reporter_id" value="11" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="15" />
+                    <column name="title" value="One more reserve task" />
+                    <column name="description" value="for free time" />
+                    <column name="priority" value="LOW" />
+                    <column name="status" value="BACKLOG" />
+                    <column name="assignee_id" value="10" />
+                    <column name="reporter_id" value="11" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="16" />
+                    <column name="title" value="New service for currency conversion" />
+                    <column name="description" value="Need to create new service for currency conversion" />
+                    <column name="priority" value="MIDDLE" />
+                    <column name="status" value="CLOSED" />
+                    <column name="assignee_id" value="10" />
+                    <column name="reporter_id" value="11" />
+                </insert>
+
+
+                <insert tableName="tasks">
+                    <column name="id" value="17" />
+                    <column name="title" value="Fatal error in starting application" />
+                    <column name="description" value="Need to fix today" />
+                    <column name="priority" value="HIGH" />
+                    <column name="status" value="IN_PROGRESS" />
+                    <column name="assignee_id" value="11" />
+                    <column name="reporter_id" value="10" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="18" />
+                    <column name="title" value="Not very important task" />
+                    <column name="description" value="not very important task!!!!1" />
+                    <column name="priority" value="MIDDLE" />
+                    <column name="status" value="BACKLOG" />
+                    <column name="assignee_id" value="11" />
+                    <column name="reporter_id" value="10" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="19" />
+                    <column name="title" value="Create a payment form" />
+                    <column name="description" value="Create a payment form using angular" />
+                    <column name="priority" value="MIDDLE" />
+                    <column name="status" value="BACKLOG" />
+                    <column name="assignee_id" value="11" />
+                    <column name="reporter_id" value="10" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="20" />
+                    <column name="title" value="Incorrect response during payment" />
+                    <column name="description" value="Got an incorrect response when making payment" />
+                    <column name="priority" value="LOW" />
+                    <column name="status" value="CLOSED" />
+                    <column name="assignee_id" value="11" />
+                    <column name="reporter_id" value="10" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="21" />
+                    <column name="title" value="Reserve task" />
+                    <column name="description" value="for free time" />
+                    <column name="priority" value="LOW" />
+                    <column name="status" value="CLOSED" />
+                    <column name="assignee_id" value="11" />
+                    <column name="reporter_id" value="10" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="22" />
+                    <column name="title" value="One more reserve task" />
+                    <column name="description" value="for free time" />
+                    <column name="priority" value="LOW" />
+                    <column name="status" value="BACKLOG" />
+                    <column name="assignee_id" value="11" />
+                    <column name="reporter_id" value="10" />
+                </insert>
+                <insert tableName="tasks">
+                    <column name="id" value="23" />
+                    <column name="title" value="New service for currency conversion" />
+                    <column name="description" value="Need to create new service for currency conversion" />
+                    <column name="priority" value="MIDDLE" />
+                    <column name="status" value="CLOSED" />
+                    <column name="assignee_id" value="11" />
+                    <column name="reporter_id" value="10" />
+                </insert>
+
+
+                <insert tableName="comments">
+                    <column name="id" value="10" />
+                    <column name="content" value="Deadline is 20-01-2021" />
+                    <column name="creation_time" value="2021-12-15 18:32:17.335" />
+                    <column name="task_id" value="16" />
+                    <column name="user_id" value="10" />
+                </insert>
+                <insert tableName="comments">
+                    <column name="id" value="11" />
+                    <column name="content" value="Ready to test" />
+                    <column name="creation_time" value="2021-12-17 18:32:17.335" />
+                    <column name="task_id" value="16" />
+                    <column name="user_id" value="11" />
+                </insert>
+                <insert tableName="comments">
+                    <column name="id" value="12" />
+                    <column name="content" value="doesn't work" />
+                    <column name="creation_time" value="2021-12-13 18:32:17.335" />
+                    <column name="task_id" value="16" />
+                    <column name="user_id" value="10" />
+                </insert>
+                <insert tableName="comments">
+                    <column name="id" value="13" />
+                    <column name="content" value="Task in prod" />
+                    <column name="creation_time" value="2021-12-21 18:32:17.335" />
+                    <column name="task_id" value="16" />
+                    <column name="user_id" value="10" />
+                </insert>
+    </changeSet>
+</databaseChangeLog>
